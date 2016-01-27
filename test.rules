@@ -1,2 +1,2 @@
 S -> F
-F -> F[LF][RF]
+F -> F[RF][LF]

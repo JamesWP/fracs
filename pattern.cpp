@@ -58,6 +58,7 @@ void forward()
   cout << " -> ";
   current.pos.x += sin(current.direction) * current.dist;
   current.pos.y += cos(current.direction) * current.dist;
+  current.dist *=0.9;
   updateBounds();
   output();
   cout << endl;
@@ -66,18 +67,20 @@ void forward()
 void left()
 {
   current.direction -= current.ang;
+  current.ang *= 0.9;
 }
 
 void right()
 {
   current.direction += current.ang;
+  current.ang *= 0.9;
 }
 
 int main(int argc, char const *argv[]) {
   std::fstream f;
   f.open(argv[1], std::fstream::in);
 
-  current.ang = 0.174533;
+  current.ang = 0.14;
   current.dist = 1.0;
   current.direction = 0.0;
   current.pos.x = 0.0;

@@ -39,6 +39,12 @@ int
 main(int argc, char const *argv[]) {
   std::fstream f;
   f.open(argv[1], std::fstream::in);
+
+  int processing = 10;
+
+  if(argc >=2)
+    processing = std::stoi(argv[2]);
+
   rules r;
   const regex linePattern ("\\s*([a-zA-Z])\\s*->\\s*([a-zA-Z\\[\\]]*)\\s*");
   for (std::string line; std::getline(f, line);){
@@ -64,8 +70,7 @@ main(int argc, char const *argv[]) {
   }
 
   auto processed = string("S");
-
-  for(int i=0;i<10;i++)
+  for(int i=0;i<processing;i++)
     processed = processRule(processed,r);
 
   cout << processed << endl;

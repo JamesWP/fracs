@@ -10,6 +10,7 @@ using std::stof;
 using std::cerr;
 using std::cout;
 using std::endl;
+using std::string;
 
 using coord = struct { float x,y; };
 using line = struct { coord start, end; };
@@ -17,10 +18,12 @@ sf::RenderTexture tex;
 coord minBounds;
 coord maxBounds;
 vector<line> lines;
+string filename;
+string outputFilename;
 
 void save()
 {
-  tex.getTexture().copyToImage().saveToFile("text.png");
+  tex.getTexture().copyToImage().saveToFile(outputFilename);
 }
 
 void init()
@@ -55,7 +58,7 @@ void draw(coord s, coord e)
   tex.draw(line, 2, sf::Lines);
 }
 
-void read(const char file[]){
+void read(const string file){
   std::fstream f;
   f.open(file, std::fstream::in);
 
@@ -85,8 +88,28 @@ void output(){
   save();
 }
 
-int main(int argv, char* args[])
+void parseCommandline(char* argc[], int argv)
 {
-  read(args[1]);
+  for(int i=0;i<argv;i++)
+  {
+    if(i==1) filename = argc[i];
+    else if(argc[i][0]=='-'){
+      switch (argc[i][1]){
+        case 'o':
+          outputFilename = argc[i+1];
+          i++;
+        break;
+        default:
+          cerr << "Unknown command line option: " << argc[i] << endl;
+          exit(2);
+      }
+    }
+  }
+}
+
+int main(int argv, char* argc[])
+{
+  parseCommandline(argc, argv);
+  read(filename);
   output();
 }
